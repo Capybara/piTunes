@@ -3,7 +3,7 @@
 require 'net/telnet'
 
 trigger = ARGV.shift
-
+# This is the start up settings for my Yamaha receiver: 
 if trigger == 'userlogin'
 	webserver = Net::Telnet::new('Host' => '10.0.1.9', 'Port' => 50000, 'Wait-time' => 0.1, 'Prompt' => /.*/, 'Telnet-mode' => false)
 	input = "@MAIN:INP=HDMI3"

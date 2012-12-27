@@ -1,6 +1,18 @@
 require "sinatra"
 require "haml"
 require "net/telnet"
+
+
+def pgrep_wrap(process)
+	pid = `pgrep -if #{process}`
+	if pid.strip.to_i > 0
+		return true
+	else
+		return false
+	end
+end
+
+
 get '/' do 
 	haml :index
 end
@@ -20,8 +32,16 @@ post '/pidora' do
 		webserver.cmd("@MAIN:VOL=Up 5 dB") 
 	elsif @next == "next"
 		`echo n > $HOME/.config/pianobar/ctl`
-	elsif @play == "play"
-		`echo p > $HOME/.config/pianobar/ctl`
+	end
+
+	if @play == "play"
+		if pgrep_wrap("pianobar")
+			`echo p > $HOME/.config/pianobar/ctl`
+		else
+		`pianobar`
+		delay 3
+		haml :pidora
+		end
 	end
 	haml :pidora
 end
