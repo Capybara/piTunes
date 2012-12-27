@@ -13,21 +13,20 @@ if trigger == 'userlogin'
 	sleep 3
 	webserver.cmd(input)
 
-	webserver.cmd(power)
+	webserver.cmd(vol)
 end
 
 if trigger == 'songstart'
-songinfo = {}
-
-STDIN.each_line { |line| songinfo.store(*line.chomp.split('=',2))}
-`rm ~/Ruby/sinPan/public/*.* 2> /dev/null`
-`wget -q --directory-prefix=$HOME/Ruby/sinPan/public/ "#{songinfo['coverArt']}"`
-img=`ls $HOME/Ruby/sinPan/public/`
-`mv $HOME/Ruby/sinPan/public/*.jpg $HOME/Ruby/sinPan/public/art.jpg`
-title=songinfo['title']
-artist=songinfo['artist']
-`echo "<link href="txtstyle.css" rel="stylesheet" type="text/css" />" > $HOME/Ruby/sinPan/public/song.html`
-`echo "#{title} by #{artist}" >> $HOME/Ruby/sinPan/public/song.html`
-@songInfo="#{songinfo['title']}\nby #{songinfo['artist']}"
+	songinfo = {}
+	STDIN.each_line { |line| songinfo.store(*line.chomp.split('=',2))}
+	`rm ~/Ruby/sinPan/public/*.* 2> /dev/null`
+	`wget -q --directory-prefix=$HOME/Ruby/sinPan/public/ "#{songinfo['coverArt']}"`
+	img=`ls $HOME/Ruby/sinPan/public/`
+	`mv $HOME/Ruby/sinPan/public/*.jpg $HOME/Ruby/sinPan/public/art.jpg`
+	title=songinfo['title']
+	artist=songinfo['artist']
+	`echo "<link href="txtstyle.css" rel="stylesheet" type="text/css" />" > $HOME/Ruby/sinPan/public/song.html`
+	`echo "#{title} by #{artist}" >> $HOME/Ruby/sinPan/public/song.html`
+	@songInfo="#{songinfo['title']}\nby #{songinfo['artist']}"
 end
 
