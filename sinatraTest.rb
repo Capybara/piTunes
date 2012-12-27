@@ -10,18 +10,20 @@ get '/pidora' do
 end
 
 post '/pidora' do
-webserver = Net::Telnet::new('Host' => '10.0.1.9', 'Port' => 50000, 'Wait-time' => 0.5, 'Prompt' => /.*/, 'Telnet-mode' => false)
+	webserver = Net::Telnet::new('Host' => '10.0.1.9', 'Port' => 50000, 'Wait-time' => 0.5, 'Prompt' => /.*/, 'Telnet-mode' => false)
 	@volUp = params[:volUp]
+	@next = params[:next]
+	@play = params[:play]
 	if @volUp == "Down"
 		webserver.cmd("@MAIN:VOL=Down 5 dB")
 	elsif @volUp == "Up"
 		webserver.cmd("@MAIN:VOL=Up 5 dB") 
+	elsif @next == "next"
+		`echo n > $HOME/.config/pianobar/ctl`
+	elsif @play == "play"
+		`echo p > $HOME/.config/pianobar/ctl`
 	end
 	haml :pidora
-	puts @volUp
-	puts @webserver
-	haml :pidora
-	@song=`cat song.txt`
 end
 
 __END__
@@ -46,13 +48,15 @@ __END__
 %html{:style => "background-color:green;text-align:center"}
 %head
 	<meta http-equiv="refresh" content="10" >
-%h1{:style => "color:white"} piTunes
+%h1{:style => "color:silver;font-size:600%;"} π-Tunes
 %form(action='/pidora' method='POST')
 	%h3
-	%input(type='submit' name='volUp' value="Vol Down")
-	%input(type='submit' name='volUp' value="Vol Up")
+	%input(type='submit' name='volUp' value="Down")
+	%input(type='submit' name='volUp' value="Up")
+	%input(type='submit' name='next' value="next")
+	%input(type='submit' name='play' value="play")
 %html
 	%h1
-		<iframe src="song.html" width="180" height="50" align="middle" style="background-color: silver"></iframe>
+		<iframe src="song.html" frameborder="5" width="180" height="50" align="middle" style="background-color: silver;color: #FFFFFF"></iframe>
 <img src="art.jpg" width="600" height="600" align="middle"/>
 
