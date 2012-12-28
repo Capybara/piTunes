@@ -25,20 +25,21 @@ end
 post '/pidora' do
 	@s=`cat $HOME/Ruby/sinPan/station.txt`
 	@s=@s.to_i
-	webserver = Net::Telnet::new('Host' => '10.0.1.9', 'Port' => 50000, 'Wait-time' => 0.5, 'Prompt' => /.*/, 'Telnet-mode' => false)
 	@volUp = params[:volUp]
 	@quit = params[:quit]
 	@next = params[:next]
 	@play = params[:play]
 	@NS = params[:NS]
 	if @volUp == "Down"
+		webserver = Net::Telnet::new('Host' => '10.0.1.9', 'Port' => 50000, 'Wait-time' => 0.2, 'Prompt' => /.*/, 'Telnet-mode' => false, 'Timeout' => 0.5)
 		webserver.cmd("@MAIN:VOL=Down 5 dB")
 	elsif @volUp == "Up"
+		webserver = Net::Telnet::new('Host' => '10.0.1.9', 'Port' => 50000, 'Wait-time' => 0.2, 'Prompt' => /.*/, 'Telnet-mode' => false, 'Timeout' => 0.5)
 		webserver.cmd("@MAIN:VOL=Up 5 dB") 
 	elsif @next == "next"
-		`echo n > $HOME/.config/pianobar/ctl`
+		`echo -n "n" > $HOME/.config/pianobar/ctl`
 	elsif @quit == "quit"
-		`echo q > $HOME/.config/pianobar/ctl`
+		`echo -n "q" > $HOME/.config/pianobar/ctl`
 	elsif @NS == "NS"
 		if @s < 26
 			@s+=1
@@ -50,10 +51,8 @@ post '/pidora' do
 	end
 
 	if @play == "play"
-		if pgrep_wrap("pianobar")
-			`echo p > $HOME/.config/pianobar/ctl`
+			`echo -n "p" > $HOME/.config/pianobar/ctl`
 			haml :pidora
-		end
 		# added else `pianobar` but would make it freeze on execution
 	end
 haml :pidora
