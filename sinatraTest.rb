@@ -31,11 +31,13 @@ post '/pidora' do
 	@play = params[:play]
 	@NS = params[:NS]
 	if @volUp == "Down"
-		webserver = Net::Telnet::new('Host' => '10.0.1.9', 'Port' => 50000, 'Wait-time' => 0.2, 'Prompt' => /.*/, 'Telnet-mode' => false, 'Timeout' => 0.5)
+		webserver = Net::Telnet::new('Host' => '10.0.1.9', 'Port' => 50000, 'Wait-time' => 0.2, 'Prompt' => /.*/, 'Telnet-mode' => false, 'Timeout' => 5)
 		webserver.cmd("@MAIN:VOL=Down 5 dB")
+		webserver.close
 	elsif @volUp == "Up"
-		webserver = Net::Telnet::new('Host' => '10.0.1.9', 'Port' => 50000, 'Wait-time' => 0.2, 'Prompt' => /.*/, 'Telnet-mode' => false, 'Timeout' => 0.5)
+		webserver = Net::Telnet::new('Host' => '10.0.1.9', 'Port' => 50000, 'Wait-time' => 0.2, 'Prompt' => /.*/, 'Telnet-mode' => false, 'Timeout' => 5)
 		webserver.cmd("@MAIN:VOL=Up 5 dB") 
+		webserver.close
 	elsif @next == "next"
 		`echo -n "n" > $HOME/.config/pianobar/ctl`
 	elsif @quit == "quit"
