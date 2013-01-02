@@ -19,7 +19,7 @@ end
 if trigger == 'songstart'
 	songinfo = {}
 	STDIN.each_line { |line| songinfo.store(*line.chomp.split('=',2))}
-	`rm ~/Ruby/sinPan/public/*.* 2> /dev/null`
+	`rm ~/Ruby/sinPan/public/art.jpg 2> /dev/null`
 	`wget -q --directory-prefix=$HOME/Ruby/sinPan/public/ "#{songinfo['coverArt']}"`
 	img=`ls $HOME/Ruby/sinPan/public/`
 	`mv $HOME/Ruby/sinPan/public/*.jpg $HOME/Ruby/sinPan/public/art.jpg`

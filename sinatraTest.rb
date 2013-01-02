@@ -2,7 +2,6 @@ require "sinatra"
 require "haml"
 require "net/telnet"
 
-
 @s = 12
 def pgrep_wrap(process)
 	pid = `pgrep -if #{process}`
@@ -39,22 +38,21 @@ post '/pidora' do
 		webserver.cmd("@MAIN:VOL=Up 5 dB") 
 		webserver.close
 	elsif @next == "next"
-		`echo -n "n" > $HOME/.config/pianobar/ctl`
+		`echo "n" >> $HOME/.config/pianobar/ctl`
 	elsif @quit == "quit"
-		`echo -n "q" > $HOME/.config/pianobar/ctl`
+		`echo "q" >> $HOME/.config/pianobar/ctl`
 	elsif @NS == "NS"
 		if @s < 26
 			@s+=1
 		else
 			@s=1
 		end
-		`echo s#{@s} > $HOME/.config/pianobar/ctl`
+		`echo s#{@s} >> $HOME/.config/pianobar/ctl`
 		`echo #{@s} > $HOME/Ruby/sinPan/station.txt`
 	end
 
 	if @play == "play"
-			`echo -n "p" > $HOME/.config/pianobar/ctl`
-			haml :pidora
+			`echo "p" >> $HOME/.config/pianobar/ctl`
 		# added else `pianobar` but would make it freeze on execution
 	end
 haml :pidora
@@ -86,14 +84,14 @@ __END__
 	%h3{:style => "background-color:silver"}
 	%input(STYLE="background-color:silver" type='submit' name='volUp' value="Down")
 	%input(STYLE="background-color:silver" type='submit' name='volUp' value="Up")
+	%input(STYLE="background-color:silver; color:green" type='submit' name='play' value="play")
 	%input(STYLE="background-color:silver" type='submit' name='next' value="next")
-	%input(STYLE="background-color:silver" type='submit' name='play' value="play")
-	%input(STYLE="background-color:silver" type='submit' name='quit' value="quit")
 	%input(STYLE="background-color:silver" type='submit' name='NS' value="NS")
+	%input(STYLE="background-color:silver; color:red" type='submit' name='quit' value="quit")
 %html
 	%h1{:style => "color:silver;font-size:200%;"}
 		<meta http-equiv="refresh" content="5" >
 		= `cat $HOME/Ruby/sinPan/public/song.html`
 		<txt src="song.html" frameborder="5" width="180" height="50" align="middle" style="background-color: silver;color: #FFFFFF"></txt>
-<img src="art.jpg" width="600" height="600" align="middle"/>
-
+<img src="art.jpg" alt="Album Artwork" width="600" height="600" align="middle"/>
+%h2
